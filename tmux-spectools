@@ -1,0 +1,30 @@
+#!/bin/bash
+
+SESSION_NAME=spectools
+ENV=spectools
+PROJECT_PATH='~/Projects/spectools'
+
+source ~/miniconda3/etc/profile.d/conda.sh
+
+tmux has-session -t $SESSION_NAME 2>/dev/null
+
+if [ $? != 0 ]
+then
+    tmux new-session -s $SESSION_NAME -n editor -d
+    tmux send-keys -t $SESSION_NAME "cd $PROJECT_PATH" C-m
+    #tmux send-keys -t $SESSION_NAME "source venv/bin/activate" C-m
+    tmux send-keys -t $SESSION_NAME "conda activate $ENV" C-m
+    tmux send-keys -t $SESSION_NAME "clear" C-m
+    tmux send-keys -t $SESSION_NAME "$EDITOR" C-m
+    tmux new-window -n console -t $SESSION_NAME
+    tmux send-keys -t $SESSION_NAME:1 "cd $PROJECT_PATH" C-m
+    tmux send-keys -t $SESSION_NAME:1 "conda activate $ENV" C-m
+    tmux send-keys -t $SESSION_NAME:1 "clear" C-m
+    tmux new-window -n notebook -t $SESSION_NAME
+    tmux send-keys -t $SESSION_NAME:2 "cd $PROJECT_PATH" C-m
+    tmux send-keys -t $SESSION_NAME:2 "conda activate $ENV" C-m
+    tmux send-keys -t $SESSION_NAME:2 "clear" C-m
+    tmux select-pane -t $SESSION_NAME:0
+fi
+
+tmux attach -t $SESSION_NAME
