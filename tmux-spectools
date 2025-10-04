@@ -20,10 +20,9 @@ then
     tmux send-keys -t $SESSION_NAME:1 "conda activate $ENV" C-m
     tmux send-keys -t $SESSION_NAME:1 "clear" C-m
     tmux new-window -n notebook -t $SESSION_NAME -d
-    tmux send-keys -t $SESSION_NAME:2 "cd $PROJECT_PATH" C-m
+    tmux send-keys -t $SESSION_NAME:2 "cd $PROJECT_PATH/Notebooks" C-m
     tmux send-keys -t $SESSION_NAME:2 "conda activate $ENV" C-m
     tmux send-keys -t $SESSION_NAME:2 "clear" C-m
-    tmux select-pane -t $SESSION_NAME:1
 fi
 
-tmux attach -t $SESSION_NAME
+tmux attach -t $SESSION_NAME:0
